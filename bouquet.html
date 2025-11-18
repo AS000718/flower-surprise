@@ -2,80 +2,36 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Opening…</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ye chale ga?</title>
 <style>
   html,body{
-    height:100%;
     margin:0;
+    padding:0;
     font-family:system-ui, Arial;
-    display:flex;
-    align-items:center;
-    justify-content:center;
     background:#fafafa;
-  }
-
-  .card{
-    background:white;
-    padding:30px;
-    border-radius:12px;
-    box-shadow:0 4px 20px rgba(0,0,0,0.15);
     text-align:center;
-    width:320px;
   }
 
-  h2{
-    margin-top:0;
-    font-size:24px;
-    font-weight:700;
+  .container{
+    max-width:600px;
+    margin:40px auto;
   }
 
-  p{
-    color:#666;
-    font-size:14px;
+  img{
+    width:100%;
+    border-radius:12px;
   }
 
-  .btn{
-    display:inline-block;
-    margin-top:10px;
-    padding:10px 18px;
-    background:#1a73e8;
-    color:white;
-    border-radius:8px;
-    text-decoration:none;
-    font-weight:600;
-  }
-
-  #count{
+  h1{
+    font-size:36px;
+    margin-top:20px;
     font-weight:700;
   }
 </style>
 </head>
-
 <body>
 
-<div class="card">
-  <h2>Opening the surprise…</h2>
-  <p>If it doesn’t open automatically,<br>click the button below.</p>
-
-  <a class="btn" href="bouquet.html">Open Now</a>
-
-  <p style="margin-top:15px;">Redirecting in <span id="count">3</span> seconds…</p>
-</div>
-
-<script>
-let sec = 3;
-let t = setInterval(() => {
-  sec--;
-  document.getElementById("count").textContent = sec;
-  if(sec === 0){
-    clearInterval(t);
-    window.location.href = "bouquet.html";
-  }
-}, 1000);
-</script>
-
-</body>
-</html>
+<div class="container">
+  <img src="data:image/png;base64,iV
 
