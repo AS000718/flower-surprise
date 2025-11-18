@@ -1,39 +1,66 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Ye chale ga?</title>
-<style>
-  html,body{
-    margin:0;
-    padding:0;
-    font-family:system-ui, Arial;
-    background:#fafafa;
-    text-align:center;
-  }
-  .container{
-    max-width:600px;
-    margin:40px auto;
-  }
-  img{
-    width:100%;
-    border-radius:12px;
-  }
-  h1{
-    font-size:36px;
-    margin-top:20px;
-    font-weight:700;
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bouquet</title>
+  <style>
+    html,body {
+      height:100%;
+      margin:0;
+      font-family: Arial, sans-serif;
+    }
+    .bg {
+      position:relative;
+      height:100%;
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#000;
+      overflow:hidden;
+    }
+
+    .bg::before{
+      content:"";
+      position:absolute;
+      inset:0;
+
+      /* ⭐ IMPORTANT ⭐ */
+      /* USING YOUR LOCAL IMAGE 'bou.png' */
+      background-image: url("bou.png");
+
+      background-size:cover;
+      background-position:center;
+    }
+
+    .overlay {
+      position:absolute;
+      inset:0;
+      background: rgba(0,0,0,0.35);
+    }
+
+    .message {
+      position:relative;
+      z-index:2;
+    }
+
+    .message h1 {
+      margin:0;
+      font-size: clamp(36px, 6vw, 72px);
+      color:white;
+      text-shadow:0 4px 14px rgba(0,0,0,0.8);
+      font-weight:700;
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-  <img src="bouquet.png" alt="Colorful flower bouquet">
-  <h1>ye chale ga?</h1>
-</div>
+  <div class="bg">
+    <div class="overlay"></div>
+    <div class="message">
+      <h1>ye chale ga?</h1>
+    </div>
+  </div>
 </body>
 </html>
-
-
 
