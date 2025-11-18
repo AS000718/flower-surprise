@@ -25,13 +25,19 @@
       content:"";
       position:absolute;
       inset:0;
-
-      /* ⭐ IMPORTANT ⭐ */
-      /* USING YOUR LOCAL IMAGE 'bou.png' */
       background-image: url("bou.png");
+      background-size: cover;
+      background-position: center;
+    }
 
-      background-size:cover;
-      background-position:center;
+    /* ⭐ Mobile fix: stop image from zooming too much */
+    @media (max-width: 600px) {
+      .bg::before {
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-color: #000;
+      }
     }
 
     .overlay {
@@ -47,20 +53,19 @@
 
     .message h1 {
       margin:0;
-      font-size: clamp(36px, 6vw, 72px);
+      font-size: clamp(30px, 5vw, 60px);
       color:white;
       text-shadow:0 4px 14px rgba(0,0,0,0.8);
       font-weight:700;
+      padding: 0 10px;
+      text-align:center;
     }
   </style>
 </head>
 <body>
   <div class="bg">
     <div class="overlay"></div>
-    <div class="message">
-      <h1>ye chale ga?</h1>
-    </div>
+    <div class="message"><h1>ye chale ga?</h1></div>
   </div>
 </body>
 </html>
-
