@@ -6,274 +6,243 @@
 <title>Flower Surprise</title>
 <style>
   :root{
-    --bg:#0f1724;
-    --card-bg: rgba(255,255,255,0.04);
-    --accent: #fff;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);color:var(--accent);-webkit-font-smoothing:antialiased}
-  .app{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:24px;
+    --bg: #071024;
+    --overlay: rgba(0,0,0,0.36);
+    --btn-bg: #ffffff;
+    --btn-color: #071024;
+    --accent: #ffd966;
+    --success: #36d399;
+    --danger: #ff6b6b;
   }
 
-  /* slide container (carousel-like) */
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);color:#fff;-webkit-font-smoothing:antialiased}
+  .app{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+
   .slides {
     width:100%;
-    max-width:1100px;
-    height:80vh;
-    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.05));
-    border-radius:14px;
+    max-width:1000px;
+    height:85vh;
+    border-radius:12px;
     overflow:hidden;
     position:relative;
-    box-shadow: 0 12px 40px rgba(2,6,23,0.6);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04));
+    box-shadow: 0 12px 40px rgba(1,6,20,0.6);
   }
 
-  .slides-inner {
-    display:flex;
-    height:100%;
-    transition: transform 450ms cubic-bezier(.22,.9,.3,1);
-    will-change:transform;
-  }
+  .slides-inner { display:flex; height:100%; transition: transform 420ms cubic-bezier(.22,.9,.3,1); }
 
-  .slide {
-    min-width:100%;
-    height:100%;
-    position:relative;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:28px;
-  }
+  .slide { min-width:100%; height:100%; position:relative; display:flex; align-items:center; justify-content:center; padding:18px; }
 
-  /* common slide content card */
-  .card {
+  .card { width:100%; height:100%; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:12px; }
+
+  /* image area that occupies the top portion */
+  .image-area {
     width:100%;
     max-width:980px;
-    height:100%;
+    height:70%;
     border-radius:10px;
+    overflow:hidden;
     position:relative;
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    display:block;
+  }
+
+  .overlay { position:absolute; inset:0; background:var(--overlay); pointer-events:none; }
+
+  /* message centered over the image (user-specified single-line message) */
+  .msg {
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    z-index:3;
+    font-weight:800;
+    font-size: clamp(26px, 5vw, 56px);
+    text-align:center;
+    color:#fff;
+    text-shadow: 0 6px 18px rgba(0,0,0,0.6);
+    padding: 6px 12px;
+    line-height:1;
+  }
+
+  /* Buttons always placed below the image area as requested */
+  .below {
+    margin-top: 12px;
     display:flex;
     align-items:center;
     justify-content:center;
-  }
-
-  /* slide background image styling (keeps bouquet slide visually same) */
-  .img-bg {
-    position:absolute;
-    inset:0;
-    background-size:cover;
-    background-position:center;
-  }
-
-  /* overlay for readability */
-  .overlay {
-    position:absolute;
-    inset:0;
-    background: linear-gradient(180deg, rgba(0,0,0,0.32), rgba(0,0,0,0.32));
-  }
-
-  .center-content {
-    position:relative;
-    z-index:3;
-    text-align:center;
-    padding: 18px;
     width:100%;
-  }
-
-  .title {
-    font-size: clamp(28px, 5vw, 56px);
-    font-weight:800;
-    margin:0 0 16px;
-    text-shadow: 0 6px 18px rgba(0,0,0,0.55);
-  }
-
-  .subtitle {
-    font-size: clamp(14px, 2.2vw, 18px);
-    opacity:0.95;
-    margin-bottom:22px;
   }
 
   .btn {
-    display:inline-block;
-    background: rgba(255,255,255,0.92);
-    color:#0b1220;
-    padding:12px 20px;
+    background: var(--btn-bg);
+    color: var(--btn-color);
+    padding: 12px 18px;
     border-radius:10px;
+    border:0;
     font-weight:700;
     cursor:pointer;
-    border:0;
-    box-shadow: 0 6px 20px rgba(2,6,23,0.25);
-    transition: transform 160ms ease, box-shadow 160ms ease;
-    text-decoration:none;
+    box-shadow:0 10px 28px rgba(2,6,23,0.35);
   }
 
-  .btn:active{transform:translateY(1px)}
-  .btn.secondary{
-    background:transparent;
-    color:white;
-    border:1px solid rgba(255,255,255,0.14);
+  .btn.secondary {
+    background: transparent;
+    color: #fff;
+    border:1px solid rgba(255,255,255,0.12);
   }
 
-  /* last slide options (thumbnails and choices) */
-  .options {
+  /* Slide 5 (choices) layout */
+  .choices-wrap {
+    width:100%;
+    max-width:980px;
     display:flex;
-    gap:14px;
-    justify-content:center;
-    margin-top:18px;
-    flex-wrap:wrap;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+    padding:6px 12px;
   }
 
-  .option-card{
-    width:140px;
+  .choice-grid {
+    display:flex;
+    gap:12px;
+    justify-content:center;
+    flex-wrap:wrap;
+    width:100%;
+  }
+
+  .opt {
+    width:160px;
     border-radius:10px;
     overflow:hidden;
-    text-align:center;
-    background:rgba(255,255,255,0.03);
+    background: rgba(255,255,255,0.03);
     border:1px solid rgba(255,255,255,0.04);
     cursor:pointer;
     transition: transform 160ms ease, box-shadow 160ms ease;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
   }
+  .opt:hover { transform:translateY(-8px); box-shadow:0 18px 40px rgba(2,6,23,0.5); }
+  .opt img{ width:100%; height:120px; object-fit:cover; display:block; }
+  .opt .label { padding:10px; font-weight:800; color:#fff; background:transparent; width:100%; text-align:center; }
 
-  .option-card:hover{ transform:translateY(-6px); box-shadow:0 10px 30px rgba(2,6,23,0.45) }
-  .option-img{
-    width:100%;
-    height:110px;
-    object-fit:cover;
-    display:block;
-  }
-  .option-label{
-    padding:8px 10px;
-    font-weight:700;
-  }
-
-  /* small helper text for "woo good choice" */
-  .choice-msg{
-    margin-top:14px;
-    font-weight:700;
-    font-size:18px;
-    color:#ffefd5;
+  .result {
+    font-weight:900;
+    font-size:20px;
+    padding:12px 18px;
+    border-radius:10px;
+    display:inline-block;
+    margin-top:10px;
     opacity:0;
     transform:translateY(8px);
-    transition: opacity 260ms ease, transform 260ms ease;
+    transition:opacity 260ms ease, transform 260ms ease, box-shadow 260ms ease;
   }
-  .choice-msg.show{
-    opacity:1;
-    transform:translateY(0);
-  }
+  .result.show { opacity:1; transform:translateY(0); }
 
-  /* keep the second slide bouquet exactly like before visually */
-  /* Use the existing bou.png as full-bleed background */
-  .bouquet-bg { background-image:url("bou.png"); }
-  .bou2-bg { background-image:url("bou2.png"); background-size:cover; }
-  .bou3-bg { background-image:url("bou3.png"); background-size:cover; }
+  /* highlight styles */
+  .result.good { background: linear-gradient(90deg, rgba(54,211,153,0.12), rgba(54,211,153,0.06)); color: var(--success); box-shadow:0 10px 30px rgba(54,211,153,0.06); border:1px solid rgba(54,211,153,0.12); }
+  .result.hehe { background: linear-gradient(90deg, rgba(255,107,107,0.10), rgba(255,107,107,0.04)); color: var(--danger); box-shadow:0 10px 30px rgba(255,107,107,0.06); border:1px solid rgba(255,107,107,0.08); }
 
-  /* first slide neutral background */
-  .first-bg { background: linear-gradient(135deg,#1b2430,#09202a); }
+  /* dot pager */
+  .dots{ position:absolute; bottom:12px; left:50%; transform:translateX(-50%); display:flex; gap:8px; z-index:6; }
+  .dot{ width:8px; height:8px; border-radius:999px; background:rgba(255,255,255,0.14); }
+  .dot.active{ background:rgba(255,255,255,0.95); width:20px; border-radius:8px; }
 
-  /* responsive tweaks */
-  @media (max-width:720px){
-    .slides{ height:86vh }
-    .option-card{ width:110px }
-    .option-img{ height:90px }
-    .btn{ padding:10px 16px; font-size:15px }
+  /* responsiveness */
+  @media (max-width:700px) {
+    .image-area { height:64%; }
+    .opt { width:120px; }
+    .opt img { height:90px; }
   }
-
-  @media (max-width:420px){
-    .title{ font-size: clamp(22px, 8vw, 34px) }
+  @media (max-width:420px) {
+    .msg { font-size: clamp(20px, 8vw, 34px); padding:6px 10px; }
+    .btn { padding:10px 14px; }
   }
-
-  /* small pager dots (optional) */
-  .dots{
-    position:absolute;
-    bottom:14px;
-    left:50%;
-    transform:translateX(-50%);
-    display:flex;
-    gap:8px;
-    z-index:6;
-  }
-  .dot{
-    width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,0.18);
-  }
-  .dot.active{ background:rgba(255,255,255,0.95); width:20px; border-radius:8px }
 </style>
 </head>
 <body>
-<div class="app">
-  <div class="slides" aria-roledescription="carousel" aria-label="Flower slides">
+<div class="app" role="application" aria-label="Flower surprise application">
+  <div class="slides" aria-roledescription="carousel" aria-label="Slides">
     <div id="slidesInner" class="slides-inner">
 
       <!-- Slide 1: Landing -->
-      <section class="slide">
-        <div class="card first-bg">
-          <div class="img-bg first-bg" aria-hidden="true"></div>
-          <div class="overlay"></div>
-          <div class="center-content" role="region" aria-label="Landing">
-            <h1 class="title">flowers 👀</h1>
-            <p class="subtitle">A little surprise inside.</p>
-            <button class="btn" id="btnExplore">Explore flowers</button>
+      <section class="slide" aria-label="Landing slide">
+        <div class="card">
+          <div class="image-area" style="background: linear-gradient(135deg,#1b2430,#09202a);"></div>
+          <div class="msg" style="position:relative; top:-62%;">flowers 👀</div>
+          <div class="below">
+            <button id="btnExplore" class="btn">Explore flowers</button>
           </div>
         </div>
       </section>
 
-      <!-- Slide 2: Original bouquet (keep same visual) -->
-      <section class="slide">
+      <!-- Slide 2: Original bouquet with only "ye chale ga?" and button below picture -->
+      <section class="slide" aria-label="Bouquet slide">
         <div class="card">
-          <div class="img-bg bouquet-bg" aria-hidden="true"></div>
-          <div class="overlay"></div>
-          <div class="center-content" role="region" aria-label="Bouquet slide">
-            <h1 class="title">ye chale ga?</h1>
-            <p class="subtitle" style="opacity:0.9">A bouquet just for the moment.</p>
-            <button class="btn secondary" id="btnHey">hey click here</button>
+          <div class="image-area" style="background-image:url('bou.png');"></div>
+          <div class="msg">ye chale ga?</div>
+          <div class="below">
+            <button id="btnHey" class="btn secondary">hey click here</button>
           </div>
         </div>
       </section>
 
-      <!-- Slide 3: bou2.png -->
-      <section class="slide">
+      <!-- Slide 3: bou2 with only 'What about it?' and button below picture -->
+      <section class="slide" aria-label="Bou2 slide">
         <div class="card">
-          <div class="img-bg bou2-bg" aria-hidden="true"></div>
-          <div class="overlay"></div>
-          <div class="center-content" role="region" aria-label="Bou2 slide">
-            <h1 class="title">What about it?</h1>
-            <p class="subtitle" style="opacity:0.95">Tell me, is this nicer?</p>
-            <button class="btn" id="btnChalo">chalo next</button>
+          <div class="image-area" style="background-image:url('bou2.png');"></div>
+          <div class="msg">What about it?</div>
+          <div class="below">
+            <button id="btnChalo" class="btn">chalo next</button>
           </div>
         </div>
       </section>
 
-      <!-- Slide 4: bou3.png + options -->
-      <section class="slide">
+      <!-- Slide 4: bou3 with only 'perfect' and button below picture leading to choices -->
+      <section class="slide" aria-label="Bou3 slide">
         <div class="card">
-          <div class="img-bg bou3-bg" aria-hidden="true"></div>
-          <div class="overlay"></div>
-          <div class="center-content" role="region" aria-label="Bou3 slide - choose">
-            <h1 class="title">perfect</h1>
-            <p class="subtitle">Which flower you want from Option 1, Option 2, Option 3?</p>
+          <div class="image-area" style="background-image:url('bou3.png');"></div>
+          <div class="msg">perfect</div>
+          <div class="below">
+            <button id="btnWhich" class="btn">which flower you liked</button>
+          </div>
+        </div>
+      </section>
 
-            <!-- Options (no filenames shown) -->
-            <div class="options" role="list" aria-label="flower choices">
-              <div class="option-card" role="listitem" tabindex="0" data-choice="1" aria-label="Option 1">
-                <img src="bou.png" alt="Option 1" class="option-img">
-                <div class="option-label">Option 1</div>
+      <!-- Slide 5: Choices page (separate) -->
+      <section class="slide" aria-label="Choices slide">
+        <div class="card" style="justify-content:flex-start; padding-top:22px;">
+          <div class="choices-wrap" role="region" aria-label="Choose flower">
+            <div style="font-weight:900; font-size:28px; text-align:center;">Pick one</div>
+
+            <div class="choice-grid" role="list" aria-label="options">
+              <!-- Option 1 -->
+              <div class="opt" role="listitem" tabindex="0" data-choice="1" aria-label="Option 1">
+                <img src="bou.png" alt="Option 1">
+                <div class="label">Option 1</div>
               </div>
 
-              <div class="option-card" role="listitem" tabindex="0" data-choice="2" aria-label="Option 2">
-                <img src="bou2.png" alt="Option 2" class="option-img">
-                <div class="option-label">Option 2</div>
+              <!-- Option 2 -->
+              <div class="opt" role="listitem" tabindex="0" data-choice="2" aria-label="Option 2">
+                <img src="bou2.png" alt="Option 2">
+                <div class="label">Option 2</div>
               </div>
 
-              <div class="option-card" role="listitem" tabindex="0" data-choice="3" aria-label="Option 3">
-                <img src="bou3.png" alt="Option 3" class="option-img">
-                <div class="option-label">Option 3</div>
+              <!-- Option 3 -->
+              <div class="opt" role="listitem" tabindex="0" data-choice="3" aria-label="Option 3">
+                <img src="bou3.png" alt="Option 3">
+                <div class="label">Option 3</div>
               </div>
             </div>
 
-            <div id="choiceMsg" class="choice-msg" aria-live="polite">woo good choice</div>
+            <div id="resultMsg" class="result" role="status" aria-live="polite"></div>
+
+            <div style="margin-top:12px; text-align:center;">
+              <button id="btnBack" class="btn secondary">Back</button>
+            </div>
           </div>
         </div>
       </section>
@@ -285,65 +254,85 @@
       <div class="dot"></div>
       <div class="dot"></div>
       <div class="dot"></div>
+      <div class="dot"></div>
     </div>
 
   </div> <!-- slides -->
 </div>
 
 <script>
-  (function(){
-    const slidesInner = document.getElementById('slidesInner');
-    const dots = document.querySelectorAll('.dot');
-    const total = document.querySelectorAll('.slide').length;
-    let idx = 0;
+(function(){
+  const slidesInner = document.getElementById('slidesInner');
+  const dots = Array.from(document.querySelectorAll('.dot'));
+  const total = document.querySelectorAll('.slide').length;
+  let idx = 0;
 
-    function goTo(i){
-      if(i < 0) i = 0;
-      if(i >= total) i = total - 1;
-      idx = i;
-      slidesInner.style.transform = 'translateX(' + (-100 * idx) + '%)';
-      updateDots();
+  function goTo(i){
+    if(i < 0) i = 0;
+    if(i >= total) i = total - 1;
+    idx = i;
+    slidesInner.style.transform = 'translateX(' + (-100 * idx) + '%)';
+    updateDots();
+    // reset result message when entering choices slide
+    if(idx !== 4) clearResult();
+  }
+  function updateDots(){
+    dots.forEach((d,ii)=> d.classList.toggle('active', ii === idx));
+  }
+
+  // wired navigation buttons
+  document.getElementById('btnExplore').addEventListener('click', ()=> goTo(1));
+  document.getElementById('btnHey').addEventListener('click', ()=> goTo(2));
+  document.getElementById('btnChalo').addEventListener('click', ()=> goTo(3));
+  document.getElementById('btnWhich').addEventListener('click', ()=> goTo(4));
+  document.getElementById('btnBack').addEventListener('click', ()=> goTo(3));
+
+  // Choice behavior on slide 5
+  const opts = Array.from(document.querySelectorAll('.opt'));
+  const result = document.getElementById('resultMsg');
+
+  function clearResult(){
+    result.className = 'result';
+    result.textContent = '';
+  }
+
+  function showResultFor(choice){
+    // clear first
+    opts.forEach(o => o.style.boxShadow = '');
+    if(choice === '1' || choice === '2'){
+      result.textContent = 'Woo Great choice';
+      result.className = 'result show good';
+    } else if(choice === '3'){
+      result.textContent = 'HEHE';
+      result.className = 'result show hehe';
     }
-    function updateDots(){
-      dots.forEach((d,ii)=> d.classList.toggle('active', ii === idx));
+  }
+
+  opts.forEach(opt => {
+    const choice = opt.getAttribute('data-choice');
+    function select(){
+      // visual pick
+      opts.forEach(o => o.style.opacity = '0.95');
+      opt.style.boxShadow = '0 18px 40px rgba(3,10,30,0.6)';
+      // show message according to choice
+      showResultFor(choice);
     }
+    opt.addEventListener('click', select);
+    opt.addEventListener('keypress', (e)=> { if(e.key==='Enter' || e.key===' ') select(); });
+  });
 
-    // Buttons navigation
-    document.getElementById('btnExplore').addEventListener('click', ()=> goTo(1));
-    document.getElementById('btnHey').addEventListener('click', ()=> goTo(2));
-    document.getElementById('btnChalo').addEventListener('click', ()=> goTo(3));
+  // keyboard left / right navigation
+  window.addEventListener('keydown', (e)=>{
+    if(e.key === 'ArrowRight') goTo(Math.min(idx+1, total-1));
+    if(e.key === 'ArrowLeft') goTo(Math.max(idx-1, 0));
+  });
 
-    // Option selection on final slide
-    const options = document.querySelectorAll('.option-card');
-    const choiceMsg = document.getElementById('choiceMsg');
+  // prevent dragging images
+  document.querySelectorAll('img').forEach(i => i.setAttribute('draggable','false'));
 
-    options.forEach(opt => {
-      function choose(){
-        // show message
-        choiceMsg.classList.add('show');
-        // small visual feedback on chosen card
-        options.forEach(o => o.style.boxShadow = '');
-        opt.style.boxShadow = '0 14px 36px rgba(0,0,0,0.6)';
-        // announce (for screen readers)
-        choiceMsg.textContent = 'woo good choice';
-      }
-
-      opt.addEventListener('click', choose);
-      opt.addEventListener('keypress', (e)=> { if(e.key === 'Enter' || e.key === ' ') choose(); });
-    });
-
-    // optional keyboard navigation: left/right
-    window.addEventListener('keydown', (e)=>{
-      if(e.key === 'ArrowRight') goTo(Math.min(idx+1, total-1));
-      if(e.key === 'ArrowLeft') goTo(Math.max(idx-1, 0));
-    });
-
-    // prevent accidental image dragging
-    document.querySelectorAll('img').forEach(i => i.setAttribute('draggable','false'));
-
-    // ensure the bouquet slide (slide 2) styling remains exactly as original:
-    // we used bouquet-bg class pointing to bou.png so the slide remains unchanged visually.
-  })();
+  // initial position
+  goTo(0);
+})();
 </script>
 </body>
 </html>
